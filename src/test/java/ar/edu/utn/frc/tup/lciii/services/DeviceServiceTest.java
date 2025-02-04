@@ -4,6 +4,7 @@ import ar.edu.utn.frc.tup.lciii.dtos.common.DeviceDto;
 import ar.edu.utn.frc.tup.lciii.dtos.common.TelemetryDto;
 import ar.edu.utn.frc.tup.lciii.model.Device;
 import ar.edu.utn.frc.tup.lciii.model.DeviceType;
+import ar.edu.utn.frc.tup.lciii.model.Telemetry;
 import ar.edu.utn.frc.tup.lciii.repos.DeviceRepo;
 import ar.edu.utn.frc.tup.lciii.repos.TelemetryRepo;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ public class DeviceServiceTest {
     private DeviceRepo deviceRepo;
     @Mock
     private TelemetryRepo telemetryRepo;
+
+    private ModelMapper modelMapper;
 
     @BeforeEach
     void setUp() {
@@ -81,6 +85,23 @@ public class DeviceServiceTest {
 
     @Test
     void getDeviceByCpuUsageBetween(){
+        //objs
+        Device device1 = new Device("mateog", LocalDateTime.now(), null, DeviceType.LAPTOP, "windows", "413232");
+
+        Telemetry telemetry1 = new Telemetry(1L, device1, "mateog", "123", LocalDateTime.now(), 100.0,
+                100.0, "active", true, true);
+
+        //fake
+        when(telemetryRepo.findTelemetryByCpuUsageBetween(any(), any())).thenReturn(List.of(telemetry1));
+
+        //test
+        DeviceDto resp = service.getDeviceByCpuUsageBetween("20", "140");
+
+        //assert
+        assertNotNull(resp);
+        assertEquals(resp.getHostName(), device1.getHostName());
+        assertEquals(resp.getMacAddress(), device1.getMacAddress());
+        verify(telemetryRepo).findTelemetryByCpuUsageBetween(any(), any());
 
     }
 }

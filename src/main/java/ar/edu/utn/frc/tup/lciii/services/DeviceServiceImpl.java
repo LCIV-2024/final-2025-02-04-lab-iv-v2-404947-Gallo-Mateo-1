@@ -43,7 +43,7 @@ public class DeviceServiceImpl implements DeviceService {
         //Guarda los datos en la base de datos.
         device.setCreatedDate(LocalDateTime.now());
 
-        return modelMapper.map(deviceRepo.save(device), DeviceDto.class);
+        return mapToDeviceDto(deviceRepo.save(device));
     }
 
     @Override
@@ -51,7 +51,7 @@ public class DeviceServiceImpl implements DeviceService {
         List<Device> deviceDtoList = deviceRepo.findAllByType(type);
         List<DeviceDto> devices = new ArrayList<>();
         for(Device d : deviceDtoList) {
-            DeviceDto dto = modelMapper.map(d, DeviceDto.class);
+            DeviceDto dto = mapToDeviceDto(d);
             devices.add(dto);
         }
         return devices;
@@ -63,7 +63,31 @@ public class DeviceServiceImpl implements DeviceService {
 
         //Obtener todos los dispositivos que tengan asociada la ultima telemetria registrada con un consumo de cpu entre
         //dos valores pasados por parametros. (No permitir que el lowThreshold sea mayor al upThreshold, en dicho caso devolver 400 bad request )
-        return modelMapper.map(latestTelemetry.get(0).getDevice(), DeviceDto.class);
+        return mapToDeviceDto(latestTelemetry.get(0).getDevice());
     }
+
+    private Device mapToDevice(DeviceDto dto){
+        Device device = new Device();
+        device.setHostName(dto.getHostName());
+        device.setType(dto.getType());
+        device.setOs(dto.getOs());
+        //telemetry.setCpuUsage(dto.getCpuUsage());
+        device.setMacAddress(dto.getMacAddress());
+
+        return device;
+    }
+
+    private DeviceDto mapToDeviceDto(Device device){
+        DeviceDto dto = new DeviceDto();
+        dto.setHostName(device.getHostName());
+        dto.setType(device.getType());
+        dto.setOs(device.getOs());
+        //telemetry.setCpuUsage(dto.getCpuUsage());
+        dto.setMacAddress(device.getMacAddress());
+
+
+        return dto;
+    }
+
 
 }
