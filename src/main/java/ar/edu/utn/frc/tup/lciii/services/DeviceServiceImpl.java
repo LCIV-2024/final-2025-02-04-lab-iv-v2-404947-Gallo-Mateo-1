@@ -32,7 +32,7 @@ public class DeviceServiceImpl implements DeviceService {
 
         //POST /device
         //Recibe un JSON con los datos del dispositivo.
-        Device device = modelMapper.map(deviceDto, Device.class);
+        Device device = mapToDevice(deviceDto);
 
         //Valida que el hostname no exista preeviamente en la tabla Device, de lo contrario, rechazar la solicitud.
         Device exists = deviceRepo.findByHostName(device.getHostName());

@@ -33,7 +33,7 @@ public class DeviceServiceTest {
     @Mock
     private TelemetryRepo telemetryRepo;
 
-    private ModelMapper modelMapper;
+
 
     @BeforeEach
     void setUp() {
