@@ -37,7 +37,7 @@ public class DeviceServiceImpl implements DeviceService {
         //Valida que el hostname no exista preeviamente en la tabla Device, de lo contrario, rechazar la solicitud.
         Device exists = deviceRepo.findByHostName(deviceDto.getHostName());
 
-        if (exists.getHostName().equalsIgnoreCase(device.getHostName())){
+        if (exists == null){
             throw new IllegalArgumentException("hostname ya esta registrado");
         }
         //Guarda los datos en la base de datos.
