@@ -1,0 +1,61 @@
+#Crear el docker-compose.yml para la aplicación con los siguientes componentes:
+#Aplicación BE (La que estamos desarrollando)
+#Aplicación de la API externa (Será provista durante el examen)
+#Aplicación FE (Será provista durante el examen)
+#Base de datos MySql
+version: '3.8'
+
+services:
+
+  #Aplicación BE (La que estamos desarrollando)
+  api-final:
+    build: .
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/final_db
+      SPRING_DATASOURCE_USERNAME: tup
+      SPRING_DATASOURCE_PASSWORD: tup
+    ports:
+      - "8080:8080"
+    networks:
+      final-network:
+    depends_on:
+      mysql:
+        condition: service_healthy
+  #      api-externa:
+  #        condition: service_started
+
+
+  # Servicio de base de datos MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-2024-12-03
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: final_db
+      MYSQL_USER: tup
+      MYSQL_PASSWORD: tup
+    ports:
+      - "3307:3306"
+    expose:
+      - "3306" # Corrección: No hace falta exponer 3307, ya se mapea correctamente
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      final-network:
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+# $MYSQL_ROOT_PASSWORD dentro del healthcheck no se expande correctamente en algunos entornos.
+# Charles recomienda:
+# test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+
+# Volumen persistente para la base de datos
+volumes:
+  mysql-data:
+
+networks:
+  final-network:
+    driver: bridge

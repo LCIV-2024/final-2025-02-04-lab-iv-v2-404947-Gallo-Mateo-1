@@ -43,7 +43,7 @@ public class DeviceServiceTest {
     @Test
     void postDevice(){
         //objs
-        DeviceDto device1 = new DeviceDto("mateog", DeviceType.LAPTOP, "windows", "1424123", "6156156");
+        DeviceDto device1 = new DeviceDto("aaaa", DeviceType.LAPTOP, "windows", "1424123", "6156156");
 
         Device deviceExists = new Device("mateog", LocalDateTime.now().minusDays(10), null,
                 DeviceType.LAPTOP, "windows", "1424123");
