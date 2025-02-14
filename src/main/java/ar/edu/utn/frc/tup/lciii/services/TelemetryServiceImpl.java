@@ -39,6 +39,7 @@ public class TelemetryServiceImpl implements TelemetryService {
         }
         telemetry.setDevice(deviceExists);
         //Guarda los datos en la base de datos.
+        telemetryRepo.save(telemetry);
 
         return mapToTelemetryDto(telemetry);
         //Retorna un 201 Created si la operación fue exitosa.
@@ -46,14 +47,16 @@ public class TelemetryServiceImpl implements TelemetryService {
     }
 
     @Override
-    public List<TelemetryDto> getAllTelemetry() {
+    public List<TelemetryDto> getAllTelemetry(String hostname) {
         //Devuelve una lista con todas las entradas de telemetría registradas.
         //GET /telemetry
         List<Telemetry> telemetryList = telemetryRepo.findAll();
         List<TelemetryDto> telemetryDtoList = new ArrayList<>();
         for(Telemetry t : telemetryList) {
-            TelemetryDto dto = mapToTelemetryDto(t);
-            telemetryDtoList.add(dto);
+            if (t.getHostname().equalsIgnoreCase(hostname) || hostname == null){
+                TelemetryDto dto = mapToTelemetryDto(t);
+                telemetryDtoList.add(dto);
+            }
         }
         return telemetryDtoList;
     }
@@ -62,10 +65,10 @@ public class TelemetryServiceImpl implements TelemetryService {
     private TelemetryDto mapToTelemetryDto(Telemetry telemetry){
         TelemetryDto dto = new TelemetryDto();
         dto.setIp(telemetry.getIp());
-        dto.setHostname(telemetry.getDevice().getHostName());
+        dto.setHostname(telemetry.getHostname());
         dto.setDataDate(telemetry.getDataDate());
         dto.setHostDiskFree(telemetry.getHostDiskFree());
-        //dto.setCpuUsage(telemetry.getCpuUsage());
+        dto.setCpuUsage(telemetry.getCpuUsage());
         dto.setMicrophoneState(telemetry.getMicrophoneState());
         dto.setScreenCaptureAllowed(telemetry.getScreenCaptureAllowed());
         dto.setAudioCaptureAllowed(telemetry.getAudioCaptureAllowed());
@@ -75,10 +78,11 @@ public class TelemetryServiceImpl implements TelemetryService {
 
     private Telemetry mapToTelemetry(TelemetryDto dto){
         Telemetry telemetry = new Telemetry();
+        telemetry.setHostname(dto.getHostname());
         telemetry.setIp(dto.getIp());
         telemetry.setDataDate(dto.getDataDate());
         telemetry.setHostDiskFree(dto.getHostDiskFree());
-        //telemetry.setCpuUsage(dto.getCpuUsage());
+        telemetry.setCpuUsage(dto.getCpuUsage());
         telemetry.setMicrophoneState(dto.getMicrophoneState());
         telemetry.setScreenCaptureAllowed(dto.getScreenCaptureAllowed());
         telemetry.setAudioCaptureAllowed(dto.getAudioCaptureAllowed());

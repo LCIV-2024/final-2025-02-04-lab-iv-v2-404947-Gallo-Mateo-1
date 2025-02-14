@@ -14,6 +14,7 @@ public interface TelemetryService {
 
     //Devuelve una lista con todas las entradas de telemetría registradas.
     //GET /telemetry
-    List<TelemetryDto> getAllTelemetry();
+    //Deberia poder filtrarse por hostname:
+    List<TelemetryDto> getAllTelemetry(String hostname);
 
 }

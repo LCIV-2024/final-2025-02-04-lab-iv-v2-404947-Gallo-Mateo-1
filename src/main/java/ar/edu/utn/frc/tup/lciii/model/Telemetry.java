@@ -1,15 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,8 +24,8 @@ public class Telemetry {
     @Column(name = "ID")
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "HOSTNAME", referencedColumnName = "HOSTNAME", insertable = false, updatable = false)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "HOSTNAME", referencedColumnName = "HOSTNAME") //, insertable = false, updatable = false => eso no permitia// q se maneje bien la relacion oneToOne
     private Device device;
 
     @Column(name = "hostnameV2")

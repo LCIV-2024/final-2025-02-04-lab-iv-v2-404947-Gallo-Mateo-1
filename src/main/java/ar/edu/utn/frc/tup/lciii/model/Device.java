@@ -18,6 +18,9 @@ import java.time.LocalDateTime;
 public class Device {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "HOSTNAME", unique = true)
     private String hostName;
 
@@ -33,6 +36,9 @@ public class Device {
 
     @Column(name = "os")
     private String os;
+
+    @Column(name = "ip")
+    private String ip;
 
     @Column(name = "mac_address", unique = true)
     private String macAddress;

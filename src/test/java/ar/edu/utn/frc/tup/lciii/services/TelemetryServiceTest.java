@@ -43,11 +43,11 @@ public class TelemetryServiceTest {
     @Test
     void postTelemetry() {
         //objs
-        TelemetryDto telemetryDto = new TelemetryDto("123", LocalDateTime.now(), 100.0,
-                            "active", true, true, "mateog");
+        TelemetryDto telemetryDto = new TelemetryDto("mateog", "123", LocalDateTime.now(), 100.0,
+                            20.0, "active", true, true);
 
-        Device deviceExists = new Device("mateog", LocalDateTime.now().minusDays(10), null,
-                                DeviceType.LAPTOP, "windows", "1424123");
+        Device deviceExists = new Device(null, "mateog", LocalDateTime.now().minusDays(10), null,
+                                DeviceType.LAPTOP, "windows", "1424123", "23re43dw");
         //fakes
         when(deviceRepo.findByHostName(any())).thenReturn(deviceExists);
 
@@ -64,7 +64,7 @@ public class TelemetryServiceTest {
     @Test
     void getAllTelemetry() {
         //objs
-        Device device1 = new Device("mateog", LocalDateTime.now(), null, DeviceType.LAPTOP, "windows", "413232");
+        Device device1 = new Device(null, "mateog", LocalDateTime.now(), null, DeviceType.LAPTOP, "windows", "413232", "re42tw11");
 
         Telemetry telemetry1 = new Telemetry(1L, device1, "mateog", "123", LocalDateTime.now(), 100.0,
                 100.0, "active", true, true);
@@ -78,7 +78,7 @@ public class TelemetryServiceTest {
         when(telemetryRepo.findAll()).thenReturn(listTelemetries);
 
         //test
-        List<TelemetryDto> resp = service.getAllTelemetry();
+        List<TelemetryDto> resp = service.getAllTelemetry(null);
 
         //assert
         assertNotNull(resp);

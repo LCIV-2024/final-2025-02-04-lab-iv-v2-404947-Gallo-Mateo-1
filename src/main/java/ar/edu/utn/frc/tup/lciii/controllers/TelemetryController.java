@@ -13,12 +13,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class TelemetryController {
-
-
     @Autowired
     private TelemetryService telemetryService;
-
-
     //POST /telemetry
     //Recibe un JSON con los datos de telemetría.
     //Valida que el hostname exista en la tabla Device, de lo contrario, rechazar la solicitud.
@@ -31,8 +27,8 @@ public class TelemetryController {
 
     //Devuelve una lista con todas las entradas de telemetría registradas.
     //GET /telemetry
-    @GetMapping("{hostname}")
+    @GetMapping("")
     ResponseEntity<List<TelemetryDto>> getAllTelemetry(@RequestParam(required = false) String hostname){
-        return ResponseEntity.ok(telemetryService.getAllTelemetry());
+        return ResponseEntity.ok(telemetryService.getAllTelemetry(hostname));
     }
 }

@@ -13,21 +13,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TelemetryDto {
 
+    private String hostname;
+
     private String ip;
 
     private LocalDateTime dataDate;
 
     private Double hostDiskFree;
 
-    private String microphoneState;
+    private Double cpuUsage;
 
-    //private Double cpuUsage;
+    private String microphoneState;
 
     private Boolean screenCaptureAllowed;
 
     private Boolean audioCaptureAllowed;
-
-    private String hostname;
-
 
 }

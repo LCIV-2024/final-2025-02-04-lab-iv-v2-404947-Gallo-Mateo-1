@@ -6,10 +6,13 @@ import ar.edu.utn.frc.tup.lciii.services.DeviceService;
 import ar.edu.utn.frc.tup.lciii.services.TelemetryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/api/device")
 @CrossOrigin("*")
@@ -26,25 +29,26 @@ public class DeviceController {
     //Guarda los datos en la base de datos.
     //Retorna un 201 Created si la operación fue exitosa.
     @PostMapping("")
-    ResponseEntity<DeviceDto> postDevice(DeviceDto deviceDto){
+    ResponseEntity<DeviceDto> postDevice(@RequestBody DeviceDto deviceDto){
         return ResponseEntity.ok(deviceService.postDevice(deviceDto));
 
     }
 
     //Obtener todos los dispositivos de un tipo específico
     //GET /device?type=Laptop
-    @GetMapping("{type}")
+    @GetMapping("type")
     ResponseEntity<List<DeviceDto>> getDeviceByType(@RequestParam DeviceType type){
         return ResponseEntity.ok(deviceService.getDeviceByType(type));
-
     }
 
     // Obtener todos los dispositivos que tengan asociada la ultima telemetria registrada con un consumo de cpu entre
     //dos valores pasados por parametros. (No permitir que el lowThreshold sea mayor al upThreshold, en dicho caso devolver 400 bad request )
     //GET /device?lowThreshold=70&upThreshold=80
-
-    @GetMapping("{upThreshold}/{lowThreshold}")
-    ResponseEntity<DeviceDto> getDeviceByCpuUsageBetween(@RequestParam String upThreshold, @RequestParam String lowThreshold){
+    @GetMapping("cpuUsage")
+    ResponseEntity<DeviceDto> getDeviceByCpuUsageBetween(@RequestParam Integer upThreshold, @RequestParam Integer lowThreshold){
+        if (lowThreshold > upThreshold) {
+            return ResponseEntity.badRequest().body(null);
+        }
         return ResponseEntity.ok(deviceService.getDeviceByCpuUsageBetween(upThreshold, lowThreshold));
     }
 

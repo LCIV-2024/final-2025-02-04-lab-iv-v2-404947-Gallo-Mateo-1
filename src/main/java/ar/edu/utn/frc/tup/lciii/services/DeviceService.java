@@ -6,6 +6,8 @@ import ar.edu.utn.frc.tup.lciii.model.DeviceType;
 import java.util.List;
 
 public interface DeviceService {
+    List<DeviceDto> postRandomDevices();
+
     //POST /device
     //Recibe un JSON con los datos del dispositivo.
     //Valida que el hostname no exista preeviamente en la tabla Device, de lo contrario, rechazar la solicitud.
@@ -21,6 +23,6 @@ public interface DeviceService {
     //dos valores pasados por parametros. (No permitir que el lowThreshold sea mayor al upThreshold, en dicho caso devolver 400 bad request )
     //GET /device?lowThreshold=70&upThreshold=80
 
-    DeviceDto getDeviceByCpuUsageBetween(String upThreshold, String lowThreshold);
+    DeviceDto getDeviceByCpuUsageBetween(double upThreshold, double lowThreshold);
 
 }

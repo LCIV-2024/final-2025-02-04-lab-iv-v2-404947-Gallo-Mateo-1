@@ -15,7 +15,7 @@ public interface TelemetryRepo extends JpaRepository<Telemetry, Long> {
     //Obtener todos los dispositivos que tengan asociada la ultima telemetria registrada con un consumo de cpu entre
     //dos valores pasados por parametros. (No permitir que el lowThreshold sea mayor al upThreshold, en dicho caso devolver 400 bad request )
 
-    //    @Query("SELECT t FROM Telemetry t WHERE t.cpuUsage BETWEEN :upThreshold AND :lowThreshold")
-    @Query("SELECT t FROM Telemetry t WHERE t.cpuUsage BETWEEN :upThreshold AND :lowThreshold")
-    List<Telemetry> findTelemetryByCpuUsageBetween(String upThreshold, String lowThreshold);
+    @Query("SELECT t FROM Telemetry t WHERE t.cpuUsage BETWEEN :lowThreshold AND :upThreshold")
+    List<Telemetry> findTelemetryByCpuUsageBetween(Double upThreshold, Double lowThreshold);
+
 }
