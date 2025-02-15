@@ -1,8 +1,4 @@
-#Crear el docker-compose.yml para la aplicación con los siguientes componentes:
-#Aplicación BE (La que estamos desarrollando)
-#Aplicación de la API externa (Será provista durante el examen)
-#Aplicación FE (Será provista durante el examen)
-#Base de datos MySql
+
 version: '3.8'
 
 services:
@@ -28,7 +24,7 @@ services:
   # Servicio de base de datos MySQL
   mysql:
     image: mysql:8.0
-    container_name: mysql-2024-12-03
+    container_name: mysql-2025-02-04
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: final_db
@@ -43,7 +39,7 @@ services:
     networks:
       final-network:
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword" ]
       interval: 10s
       timeout: 5s
       retries: 5
